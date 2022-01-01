@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+import { writable, derived } from 'svelte/store'
 
 export const selectedCategory = writable(null);
 export const selectedPlaylistId = writable(null);
@@ -6,7 +6,13 @@ export const spotifyUser = writable();
 export const playlists = writable([]);
 
 export const categories = writable([])
-export const game = writable({});
+export const game = writable(null);
+
+export const currentRound = writable(1);
+export const currentRoundName = derived(currentRound, $currentRound => "Round_" + $currentRound.toString());
+export const currentSample = writable([]);
+export const currentSelectedSong = writable(null);
+
 let loaded = false;
 
 const playListsByCategoryId = {};
@@ -55,6 +61,8 @@ export const getGameForPlaylistId = async (playlistId) => {
         console.log(gameEndpoint);
         const res = await fetch(gameEndpoint);
         const data = await res.json();
+        currentSample.set(data.Round_1.sample)
+        currentSelectedSong.set(data.Round_1.selected.preview_url)
         game.set(data);
     } catch (err) {
 		console.error(err);

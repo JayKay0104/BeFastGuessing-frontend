@@ -6,7 +6,11 @@
 		selectedPlaylistId,
 		fetchCategories,
 		getPlaylistsByCategory,
-		getGameForPlaylistId
+		getGameForPlaylistId,
+		currentRound,
+		currentSample,
+		currentSelectedSong,
+		game
 	} from '../../stores/spotifyStore.js';
 	import Category from '../../components/Category.svelte';
 	import Playlist from '../../components/Playlist.svelte';
@@ -19,9 +23,13 @@
 	$: console.log($selectedCategory);
 	$: console.log($selectedPlaylistId);
 	$: console.log($playlists);
+	$: console.log($currentSample);
+	$: console.log($currentSelectedSong);
+	$: console.log($game);
 
 	function resetSelectedCategory() {
     	selectedCategory.set(null);
+		selectedPlaylistId.set(null);
 	};
 </script>
 
@@ -31,7 +39,7 @@
 {:else}
 <div>
 	<h1>Select the Playlist (only one) </h1>
-	<button on:click={resetSelectedCategory}> Reset selected category</button>
+	<button on:click={resetSelectedCategory}> Reset selected category and playlist</button>
 	<br>
 </div>
 {/if}
@@ -43,14 +51,14 @@
 					<Category {category} />
 				</div>
 			{/each}
-		{:else if $selectedCategory}
+		{:else if $selectedCategory && $selectedPlaylistId === null}
 			{#each $playlists as playlist}
 				<div on:click={() => getGameForPlaylistId(playlist.id)}>
 					<Playlist {playlist} />
 				</div>
 			{/each}
-		{:else if $selectedPlaylistId !== null}
-			<Playing></Playing>
+		{:else if $selectedPlaylistId !== null && $game !== null}
+			<Playing sample={$currentSample} selectedSong={$currentSelectedSong} round={$currentRound}/>
 		{:else}
 			<p>loading...</p>
 		{/if}
