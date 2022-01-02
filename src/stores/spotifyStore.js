@@ -12,6 +12,9 @@ export const currentRound = writable(1);
 export const currentRoundName = derived(currentRound, $currentRound => "Round_" + $currentRound.toString());
 export const currentSample = writable([]);
 export const currentSelectedSong = writable(null);
+// TODO: check if this works and if not why and fix
+//export const currentSample = derived(currentRoundName, ($currentRoundName, $game) => game[$currentRoundName].sample);
+//export const currentSelectedSong = derived(currentRoundName, ($currentRoundName, $game) => game[$currentRoundName].selected);
 export const started = writable(false);
 
 let loaded = false;
@@ -64,7 +67,7 @@ export const getGameForPlaylistId = async (playlist) => {
         const res = await fetch(gameEndpoint);
         const data = await res.json();
         currentSample.set(data.Round_1.sample)
-        currentSelectedSong.set(data.Round_1.selected.preview_url)
+        currentSelectedSong.set(data.Round_1.selected)
         game.set(data);
     } catch (err) {
 		console.error(err);

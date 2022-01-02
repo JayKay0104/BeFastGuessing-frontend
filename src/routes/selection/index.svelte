@@ -31,6 +31,7 @@
 	$: console.log($game);
 	$: console.log($currentRoundName);
 	$: console.log($started);
+	$: console.log($currentRound);
 
 	function resetSelection() {
     	selectedCategory.set(null);
