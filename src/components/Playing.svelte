@@ -11,5 +11,7 @@
     <p>{"2: " + sample[1].artist_title}</p>
     <p>{"3: " + sample[2].artist_title}</p>
     <p>{"4: " + sample[3].artist_title}</p>
-    {selectedSong}
+    <div>
+        <audio src={selectedSong} autoplay=true></audio>
+    </div>
 </article>
