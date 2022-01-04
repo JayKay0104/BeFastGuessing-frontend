@@ -12,7 +12,9 @@
 		currentSelectedSong,
 		game,
 		currentRoundName,
-		started
+		started, 
+		finished
+
 	} from '../../stores/spotifyStore.js';
 	import Category from '../../components/Category.svelte';
 	import Playlist from '../../components/Playlist.svelte';
@@ -23,15 +25,19 @@
 	onMount(() => fetchCategories());
 
 	$: console.log($categories);
-	$: console.log($selectedCategory);
+	$: console.log("selected Category:" + $selectedCategory);
 	$: console.log($selectedPlaylist);
 	$: console.log($playlists);
+	$: console.log("Current Sample:" + $currentSample);
 	$: console.log($currentSample);
 	$: console.log($currentSelectedSong);
 	$: console.log($game);
+	$: console.log("Current Round " + $currentRoundName);
 	$: console.log($currentRoundName);
-	$: console.log($started);
+	$: console.log("started: " + $started);
 	$: console.log($currentRound);
+	$: console.log("finished:" + $finished);
+
 
 	function resetSelection() {
     	selectedCategory.set(null);
@@ -41,13 +47,14 @@
 	function stopGame() {
 		resetSelection();
 		started.set(false);
+		currentRound.set(1);
 	}
 </script>
 
 {#if $categories && $selectedCategory === null}
 	<h1>Select the Categories</h1>
 	<br>
-{:else if $selectedCategory !== null && started === false}
+{:else if $selectedCategory != null && $started === false}
 <div>
 	<h1>Select the Playlist </h1>
 	<button on:click={resetSelection}> Reset selected category and playlist</button>
@@ -61,7 +68,7 @@
 </div>
 {/if}
 <main>
-	<div class="grid grid-cols-4 gap-4">
+	<div class="grid grid-cols-4 gap-4 ml-10">
 		{#if $categories && $selectedCategory === null}
 			{#each $categories as category}
 				<div on:click={() => getPlaylistsByCategory(category)}>
@@ -76,8 +83,10 @@
 			{/each}
 		{:else if $selectedPlaylist !== null && $game !== null && $started === false}
 			<StartGame/>
-		{:else if $started}
+		{:else if $started && $finished === false}
 			<Playing sample={$currentSample} selectedSong={$currentSelectedSong} round={$currentRound}/>
+		{:else if $started === true && $finished === true}
+				<p>Game finished</p>
 		{:else}
 			<p>loading...</p>
 		{/if}

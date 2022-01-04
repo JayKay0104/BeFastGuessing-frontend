@@ -12,10 +12,18 @@ export const currentRound = writable(1);
 export const currentRoundName = derived(currentRound, $currentRound => "Round_" + $currentRound.toString());
 export const currentSample = writable([]);
 export const currentSelectedSong = writable(null);
+
 // TODO: check if this works and if not why and fix
-//export const currentSample = derived(currentRoundName, ($currentRoundName, $game) => game[$currentRoundName].sample);
-//export const currentSelectedSong = derived(currentRoundName, ($currentRoundName, $game) => game[$currentRoundName].selected);
+// This does not seem to work. Deriving from an already derived variable is not working. Deriving directly from currentRound works but the frontend is not updated.
+// Workaround is to update stores in the Playing component. 
+// export const currentSample = derived(currentRoundName, ($currentRoundName, $game) => $game[$currentRoundName].sample);
+// export const currentSelectedSong = derived(currentRoundName, ($currentRoundName, $game) => $game[$currentRoundName].selected);
+
+// export const currentSample = derived(currentRound, ($currentRound, $game) => $game[$currentRound].sample);
+// export const currentSelectedSong = derived(currentRound, ($currentRound, $game) => $game[$currentRound].selected);
+
 export const started = writable(false);
+export const finished = writable(false);
 
 let loaded = false;
 
