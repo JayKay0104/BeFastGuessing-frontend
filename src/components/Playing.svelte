@@ -12,6 +12,7 @@
 	} from '../stores/spotifyStore.js';
 
     //TODO: Import Result and display it nicely below the song titles
+    import Result from '../components/Result.svelte'
 
 	// create a prop
 	export let sample;
@@ -21,32 +22,43 @@
     let selected;
     let madeGuess;
     let summedResult = 0;
-    let result;
+    let result; 
+
+    let bgColor = 'bg-blue-500';
+
+    // Generate random number between 100 and 1 to shuffle between artist and titles
+    // Odd number => Show titles otherwise artists
+    let randomInt = getRandomInt(1,100);
 
     onMount(() => sendStartRound());
-
-    function checkAnswerCorrect() {
-        if (selected == undefined) return false;
-        return selectedSong.id == selected.id;
-    }
 
     function sendGuess(songID){
         madeGuess = true;
         fetch( 'http://localhost:8000/result/'+ songID )
         .then( response => response.json() )
         .then( response => {
-            result = response;
-            summedResult = summedResult + response;
+            result = Math.round(response);
+            summedResult = summedResult + result;
             console.log(response);
         } );
+
+        if (songID === $game[$currentRoundName].selected.id){
+            bgColor='bg-[#50d71e]';
+        }
+        else {
+            bgColor='bg-[#7F0000]';
+        }
     }
 
     async function sendStartRound(){
+        bgColor='bg-blue-500';
         fetch( 'http://localhost:8000/start/'+$game[$currentRoundName].selected.id)
         .then( response => response.json() )
         .then( response => {
             console.log(response);
         } );
+        randomInt = getRandomInt(1,100);
+
     }
 
     function changeRound() {
@@ -67,15 +79,22 @@
             sendStartRound();
         }
     }
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
 </script>
 
 <div class="grid grid-rows-5 grid-cols-1 gap-4">
     <div class="content-center"><span class="align-middle">{"Round "+round}</span></div>
     {#each sample as song, i}
-        {#if round % 2 }
-            <button disabled={madeGuess} on:click={() => sendGuess(song.id)} class='w-full bg-blue-500 text-white p-6 rounded text-2xl font-bold overflow-hidden'>{i+": "+song.artist}</button>
+        {#if randomInt % 2 }
+            <button disabled={madeGuess} on:click={() => sendGuess(song.id)} class='{bgColor} w-full text-white p-6 rounded text-2xl font-bold overflow-hidden '>{i+": "+song.artist}</button>
         {:else}
-            <button disabled={madeGuess} on:click={() => sendGuess(song.id)} class='w-full bg-blue-500 text-white p-6 rounded text-2xl font-bold overflow-hidden'>{i+": "+song.title}</button>
+            <button disabled={madeGuess} on:click={() => sendGuess(song.id)} class='{bgColor} w-full text-white p-6 rounded text-2xl font-bold overflow-hidden '>{i+": "+song.title}</button>
         {/if}
     {/each}
     <div>
@@ -83,7 +102,7 @@
     </div>
     <div >
         {#if madeGuess }
-            <h1>{result}</h1>
+            <Result {result}></Result>
             <h1>Total: {summedResult}</h1>
         {/if}
     </div>

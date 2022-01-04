@@ -8,7 +8,6 @@
 
     </span>
 
-    <h1 class="text-2xl font-semibold text-gray-700 capitalize dark:text-white">{result}</h1>
-
+    <h1 class="inline-block align-baseline text-4xl font-semibold text-gray-700 capitalize dark:text-white content-around">Points: {result}</h1>
 
 </div>
