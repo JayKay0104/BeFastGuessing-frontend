@@ -2,13 +2,15 @@
 	import {
 		selectedCategory,
 		selectedPlaylist,
-        started
+        started,
+        finished
 	} from '../stores/spotifyStore.js';
     import Category from './Category.svelte';
 	import Playlist from './Playlist.svelte';
 
     function startGame() {
         started.set(true);
+        finished.set(false);
     }
 </script>
 
