@@ -37,6 +37,10 @@
 		madeGuess = true;
 		fetch('http://localhost:8000/result/', {
 			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
 			body: JSON.stringify({
 				songID: songID,
 				playerID: playerID,
@@ -98,18 +102,18 @@
 <div class="grid grid-rows-5 grid-cols-1 gap-4">
 	<div class="content-center"><span class="align-middle">{'Round ' + round}</span></div>
 	{#each sample as song, i}
-		{#if round % 2}
+		{#if randomInt % 2}
 			<button
 				disabled={madeGuess}
 				on:click={() => sendGuess(song.id, playerID, round)}
-				class="w-full bg-blue-500 text-white p-6 rounded text-2xl font-bold overflow-hidden"
+				class="{bgColor} w-full bg-blue-500 text-white p-6 rounded text-2xl font-bold overflow-hidden"
 				>{i + ': ' + song.first_artist}</button
 			>
 		{:else}
 			<button
 				disabled={madeGuess}
 				on:click={() => sendGuess(song.id, playerID, round)}
-				class="w-full bg-blue-500 text-white p-6 rounded text-2xl font-bold overflow-hidden"
+				class="{bgColor} w-full bg-blue-500 text-white p-6 rounded text-2xl font-bold overflow-hidden"
 				>{i + ': ' + song.artists_title}</button
 			>
 		{/if}

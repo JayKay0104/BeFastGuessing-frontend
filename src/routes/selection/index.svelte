@@ -12,9 +12,8 @@
 		currentSelectedSong,
 		game,
 		currentRoundName,
-		started, 
+		started,
 		finished
-
 	} from '../../stores/spotifyStore.js';
 	import Category from '../../components/Category.svelte';
 	import Playlist from '../../components/Playlist.svelte';
@@ -25,24 +24,23 @@
 	onMount(() => fetchCategories());
 
 	$: console.log($categories);
-	$: console.log("selected Category:" + $selectedCategory);
+	$: console.log('selected Category:' + $selectedCategory);
 	$: console.log($selectedPlaylist);
 	$: console.log($playlists);
-	$: console.log("Current Sample:" + $currentSample);
+	$: console.log('Current Sample:' + $currentSample);
 	$: console.log($currentSample);
 	$: console.log($currentSelectedSong);
 	$: console.log($game);
-	$: console.log("Current Round " + $currentRoundName);
+	$: console.log('Current Round ' + $currentRoundName);
 	$: console.log($currentRoundName);
-	$: console.log("started: " + $started);
+	$: console.log('started: ' + $started);
 	$: console.log($currentRound);
-	$: console.log("finished:" + $finished);
-
+	$: console.log('finished:' + $finished);
 
 	function resetSelection() {
-    	selectedCategory.set(null);
+		selectedCategory.set(null);
 		selectedPlaylist.set(null);
-	};
+	}
 
 	function stopGame() {
 		resetSelection();
@@ -53,19 +51,19 @@
 
 {#if $categories && $selectedCategory === null}
 	<h1>Select the Categories</h1>
-	<br>
+	<br />
 {:else if $selectedCategory != null && $started === false}
-<div>
-	<h1>Select the Playlist </h1>
-	<button on:click={resetSelection}> Reset selected category and playlist</button>
-	<br>
-</div>
+	<div>
+		<h1>Select the Playlist</h1>
+		<button on:click={resetSelection}> Reset selected category and playlist</button>
+		<br />
+	</div>
 {:else if $started}
-<div>
-	<h1>Playing </h1>
-	<button on:click={stopGame}> Stop the game</button>
-	<br>
-</div>
+	<div>
+		<h1>Playing</h1>
+		<button on:click={stopGame}> Stop the game</button>
+		<br />
+	</div>
 {/if}
 <main>
 	<div class="grid grid-cols-4 gap-4 ml-10">
@@ -82,11 +80,16 @@
 				</div>
 			{/each}
 		{:else if $selectedPlaylist !== null && $game !== null && $started === false}
-			<StartGame/>
+			<StartGame />
 		{:else if $started && $finished === false}
-			<Playing sample={$currentSample} selectedSong={$currentSelectedSong} round={$currentRound} playerID="1"/>
+			<Playing
+				sample={$currentSample}
+				selectedSong={$currentSelectedSong}
+				round={$currentRound}
+				playerID={1}
+			/>
 		{:else if $started === true && $finished === true}
-				<p>Game finished</p>
+			<p>Game finished</p>
 		{:else}
 			<p>loading...</p>
 		{/if}
