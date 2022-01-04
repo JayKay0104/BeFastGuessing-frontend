@@ -32,9 +32,12 @@
 
     onMount(() => sendStartRound());
 
-    function sendGuess(songID){
+    function sendGuess(songID, playerID, currentRound){
         madeGuess = true;
-        fetch( 'http://localhost:8000/result/'+ songID )
+        fetch( 'http://localhost:8000/result/', 
+        {
+            method: 'POST', body: JSON.stringify({songID: songID, playerID: playerID, round: currentRound})
+        })
         .then( response => response.json() )
         .then( response => {
             result = Math.round(response);
