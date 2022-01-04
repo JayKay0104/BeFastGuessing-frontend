@@ -84,7 +84,7 @@
 		{:else if $selectedPlaylist !== null && $game !== null && $started === false}
 			<StartGame/>
 		{:else if $started && $finished === false}
-			<Playing sample={$currentSample} selectedSong={$currentSelectedSong} round={$currentRound}/>
+			<Playing sample={$currentSample} selectedSong={$currentSelectedSong} round={$currentRound} playerID="1"/>
 		{:else if $started === true && $finished === true}
 				<p>Game finished</p>
 		{:else}
