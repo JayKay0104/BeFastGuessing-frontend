@@ -13,12 +13,15 @@
 		game,
 		currentRoundName,
 		started,
-		finished
+		finished,
+		madeGuess,
+		resultArray
 	} from '../../stores/spotifyStore.js';
 	import Category from '../../components/Category.svelte';
 	import Playlist from '../../components/Playlist.svelte';
 	import StartGame from '../../components/StartGame.svelte';
 	import Playing from '../../components/Playing.svelte';
+	import Result from '../../components/Result.svelte';
 	import { onMount } from 'svelte';
 
 	onMount(() => fetchCategories());
@@ -46,6 +49,9 @@
 		resetSelection();
 		started.set(false);
 		currentRound.set(1);
+
+		$resultArray = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]];
+		madeGuess.set(false);
 	}
 </script>
 
@@ -92,6 +98,17 @@
 			<p>Game finished</p>
 		{:else}
 			<p>loading...</p>
+		{/if}
+	</div>
+	<div class="grid grid-cols-4 gap-4 my-20">
+		{#if $madeGuess}
+			{#each $resultArray as result}
+				<div>
+					<Result {result} />
+				</div>
+			{/each}
+		{:else}
+			<p></p>
 		{/if}
 	</div>
 </main>

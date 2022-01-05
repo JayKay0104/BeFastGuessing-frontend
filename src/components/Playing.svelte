@@ -7,11 +7,11 @@
 		game,
 		currentSample,
 		currentSelectedSong,
-		started,
-		finished
+		finished,
+		madeGuess,
+		resultArray
 	} from '../stores/spotifyStore.js';
 
-	//TODO: Import Result and display it nicely below the song titles
 	import Result from '../components/Result.svelte';
 
 	// create a prop
@@ -20,8 +20,7 @@
 	export let round;
 	export let playerID;
 
-	let selected;
-	let madeGuess;
+	//let madeGuess;
 	let summedResult = 0;
 	let result;
 
@@ -34,7 +33,8 @@
 	onMount(() => sendStartRound());
 
 	function sendGuess(songID, playerID, currentRound) {
-		madeGuess = true;
+		//madeGuess = true;
+		madeGuess.set(true);
 		fetch('http://localhost:8000/result/', {
 			method: 'POST',
 			headers: {
@@ -49,9 +49,10 @@
 		})
 			.then((response) => response.json())
 			.then((response) => {
-				result = Math.round(response);
+				result = Math.round(response[playerID][$currentRoundName]);
 				summedResult = summedResult + result;
-				console.log(response);
+				$resultArray[playerID-1] = [result,summedResult];
+				console.log($resultArray);
 			});
 
 		if (songID === $game[$currentRoundName].selected.id) {
@@ -62,6 +63,7 @@
 	}
 
 	async function sendStartRound() {
+		madeGuess.set(false);
 		bgColor = 'bg-blue-500';
 		fetch('http://localhost:8000/start/' + $game[$currentRoundName].selected.id)
 			.then((response) => response.json())
@@ -85,7 +87,8 @@
 		) {
 			finished.set(true);
 		} else {
-			madeGuess = false;
+			//madeGuess = false;
+			madeGuess.set(false);
 			currentSample.set($game[$currentRoundName].sample);
 			currentSelectedSong.set($game[$currentRoundName].selected);
 			sendStartRound();
@@ -104,27 +107,27 @@
 	{#each sample as song, i}
 		{#if randomInt % 2}
 			<button
-				disabled={madeGuess}
+				disabled={$madeGuess}
 				on:click={() => sendGuess(song.id, playerID, round)}
 				class="{bgColor} w-full bg-blue-500 text-white p-6 rounded text-2xl font-bold overflow-hidden"
 				>{i + ': ' + song.first_artist}</button
 			>
 		{:else}
 			<button
-				disabled={madeGuess}
+				disabled={$madeGuess}
 				on:click={() => sendGuess(song.id, playerID, round)}
 				class="{bgColor} w-full bg-blue-500 text-white p-6 rounded text-2xl font-bold overflow-hidden"
-				>{i + ': ' + song.artists_title}</button
+				>{i + ': ' + song.title}</button
 			>
 		{/if}
 	{/each}
 	<div>
 		<audio src={selectedSong.preview_url} autoplay="true" on:ended={() => changeRound()} />
 	</div>
-	<div>
+	<!-- <div>
 		{#if madeGuess}
 			<Result {result} />
 			<h1>Total: {summedResult}</h1>
 		{/if}
-	</div>
+	</div> -->
 </div>

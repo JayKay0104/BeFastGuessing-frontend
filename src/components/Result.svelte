@@ -8,6 +8,6 @@
 
     </span>
 
-    <h1 class="inline-block align-baseline text-4xl font-semibold text-gray-700 capitalize dark:text-white content-around">Points: {result}</h1>
-
+    <h1 class="inline-block align-baseline text-4xl font-semibold text-gray-700 capitalize dark:text-white content-around">Points: {result[0]}</h1><br>
+    <h1 class="inline-block align-baseline text-4xl font-semibold text-gray-700 capitalize dark:text-white content-around">Total: {result[1]}</h1>
 </div>
