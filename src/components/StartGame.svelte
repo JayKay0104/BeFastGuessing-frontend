@@ -8,6 +8,10 @@
     import Category from './Category.svelte';
 	import Playlist from './Playlist.svelte';
 
+    // TODO
+    // Send start, finished and selected category and playlist to backend server
+    // Backendserver must then push out notification that game has started and game object
+    
     function startGame() {
         started.set(true);
         finished.set(false);

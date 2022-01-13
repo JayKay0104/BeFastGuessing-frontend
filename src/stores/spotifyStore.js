@@ -18,6 +18,7 @@ export const finished = writable(false);
 export const madeGuess = writable(false);
 export const resultArray = writable([[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]);
 
+
 // TODO: check if this works and if not why and fix
 // This does not seem to work. Deriving from an already derived variable is not working. Deriving directly from currentRound works but the frontend is not updated.
 // Workaround is to update stores in the Playing component. 

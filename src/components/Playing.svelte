@@ -110,7 +110,7 @@
 				disabled={$madeGuess}
 				on:click={() => sendGuess(song.id, playerID, round)}
 				class="{bgColor} w-full bg-blue-500 text-white p-6 rounded text-2xl font-bold overflow-hidden"
-				>{i + ': ' + song.first_artist}</button
+				>{(i+1) + ': ' + song.first_artist}</button
 			>
 		{:else}
 			<button
