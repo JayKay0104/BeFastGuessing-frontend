@@ -33,24 +33,34 @@
 
 		socket.addEventListener('message', function (event) {
 			console.log(event.data);
+
+			// Evaluate the sent data and apply game logic
+			try{
+				var socket_data = JSON.parse(event.data);
+
+				if (Object.keys(socket_data)[0] == 'game') {
+					game.set(socket_data.game);
+				}
+				else if(Object.keys(socket_data)[0] == 'start'){
+					started.set(true);
+        			finished.set(false);
+					console.log('started');
+				}
+				else if (Object.keys(socket_data)[0] == 'result'){
+					resultArray.set(socket_data.result);
+				}
+			}
+			catch (e){
+				console.log(e);
+			}
+
 		});
 	})
 
-	
-
-    $: console.log($categories);
-	$: console.log('selected Category:' + $selectedCategory);
-	$: console.log($selectedPlaylist);
-	$: console.log($playlists);
-	$: console.log('Current Sample:' + $currentSample);
-	$: console.log($currentSample);
-	$: console.log($currentSelectedSong);
 	$: console.log($game);
-	$: console.log('Current Round ' + $currentRoundName);
-	$: console.log($currentRoundName);
-	$: console.log('started: ' + $started);
-	$: console.log($currentRound);
-	$: console.log('finished:' + $finished);
+
+	// TODO:
+	// Make own PlayingPlayers component without music and where onmount ist not called
 
 </script>
 

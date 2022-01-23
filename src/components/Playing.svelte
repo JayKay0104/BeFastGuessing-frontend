@@ -63,6 +63,7 @@
 	}
 
 	async function sendStartRound() {
+		console.log('game_started');
 		madeGuess.set(false);
 		bgColor = 'bg-blue-500';
 		fetch('http://localhost:8000/start/' + $game[$currentRoundName].selected.id)
