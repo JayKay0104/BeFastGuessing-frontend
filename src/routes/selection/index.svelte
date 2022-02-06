@@ -39,6 +39,7 @@
 	$: console.log('started: ' + $started);
 	$: console.log($currentRound);
 	$: console.log('finished:' + $finished);
+	$: console.log('Result:' + $resultArray);
 
 	function resetSelection() {
 		selectedCategory.set(null);

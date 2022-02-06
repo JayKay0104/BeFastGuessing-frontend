@@ -1,7 +1,6 @@
 <script>
     import "../app.css"
 </script>
-
 <div>
     <nav class="bg-blue-900 shadow-lg">
         <div class="container mx-auto">

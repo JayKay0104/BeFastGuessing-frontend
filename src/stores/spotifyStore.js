@@ -17,6 +17,7 @@ export const started = writable(false);
 export const finished = writable(false);
 export const madeGuess = writable(false);
 export const resultArray = writable([[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]]);
+export const bgColor = writable('bg-blue-500');
 
 
 // TODO: check if this works and if not why and fix

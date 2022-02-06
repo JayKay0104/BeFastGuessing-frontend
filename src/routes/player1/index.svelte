@@ -15,11 +15,14 @@
 		started,
 		finished,
 		madeGuess,
-		resultArray
+		resultArray,
+		bgColor
 	} from '../../stores/spotifyStore.js';
 
+	
 	import StartGame from '../../components/StartGame.svelte';
 	import Playing from '../../components/Playing.svelte';
+	import PlaylingMobile from '../../components/PlaylingMobile.svelte';
 	import Result from '../../components/Result.svelte';
 	import { onMount } from 'svelte';
 
@@ -46,6 +49,9 @@
         			finished.set(false);
 					console.log('started');
 				}
+				else if(Object.keys(socket_data)[0] == 'change_round'){
+					changeRound();
+				}
 				else if (Object.keys(socket_data)[0] == 'result'){
 					resultArray.set(socket_data.result);
 				}
@@ -58,15 +64,40 @@
 	})
 
 	$: console.log($game);
+	$: console.log('Current Round ' + $currentRoundName);
+	$: console.log($currentRoundName);
+	$: console.log('started: ' + $started);
+	$: console.log($currentRound);
+	$: console.log($finished);
+	$: console.log('finished:' + $finished);
 
-	// TODO:
-	// Make own PlayingPlayers component without music and where onmount ist not called
+	function changeRound() {
+		bgColor.set('bg-blue-500');
+		// Only update round till final round is reached to avoid error when deriving currentRoundName
+		if ($currentRound < 10) {
+			currentRound.set($currentRound + 1);
+		}
+
+		// If last round was player finish game
+		if (
+			$currentRound + 1 > 10 ||
+			$game[$currentRoundName].sample == null ||
+			$game[$currentRoundName].sample == ''
+		) {
+			finished.set(true);
+		} else {
+			//madeGuess = false;
+			madeGuess.set(false);
+			currentSample.set($game[$currentRoundName].sample);
+			currentSelectedSong.set($game[$currentRoundName].selected);
+		}
+	}
 
 </script>
 
 {#if $started === true && $finished === false}
     <div class="grid grid-cols-4 gap-4 ml-10">
-        <Playing
+        <PlaylingMobile
         sample={$currentSample}
         selectedSong={$currentSelectedSong}
         round={$currentRound}
